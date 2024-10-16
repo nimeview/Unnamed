@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class ChangeScenes : MonoBehaviour
 {
+    
     public void ChangeSceneByName(string sceneName)
     {
         if (Application.CanStreamedLevelBeLoaded(sceneName))

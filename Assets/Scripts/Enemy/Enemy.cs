@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class Enemy : MonoBehaviour
 {
@@ -13,6 +14,10 @@ public class Enemy : MonoBehaviour
     public float chaseRange = 5f;
     public float attackAngle = 45f;
 
+    public Action OnAttackPlayer;
+    public Action<int> OnTakeDamage;
+    public Action OnDie;
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -26,6 +31,10 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("Player object not found! Ensure there is an object with the 'Player' tag in the scene.");
         }
+
+        OnAttackPlayer += AttackPlayer;
+        OnTakeDamage += TakeDamage;
+        OnDie += Die;
     }
 
     private void Update()
@@ -40,7 +49,7 @@ public class Enemy : MonoBehaviour
             {
                 if (IsPlayerInFront())
                 {
-                    AttackPlayer();
+                    OnAttackPlayer?.Invoke();
                     nextAttackTime = Time.time + attackCooldown;
                 }
             }
@@ -64,7 +73,7 @@ public class Enemy : MonoBehaviour
         if (player != null)
         {
             Player playerScript = player.GetComponent<Player>();
-            playerScript.TakeDamage(attackDamage);
+            playerScript.OnTakeDamage?.Invoke(attackDamage);
         }
     }
 
@@ -74,7 +83,7 @@ public class Enemy : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Die();
+            OnDie?.Invoke();
         }
     }
 

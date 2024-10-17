@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class Player : MonoBehaviour
 {
@@ -14,17 +15,25 @@ public class Player : MonoBehaviour
     private Vector2 movement;
     private Rigidbody2D rb;
 
+    public Action OnAttack;
+    public Action<int> OnTakeDamage;
+    public Action OnDie;
+
     private void Start()
     {
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
+
+        OnAttack += Attack;
+        OnTakeDamage += TakeDamage;
+        OnDie += Die;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time >= nextAttackTime)
         {
-            Attack();
+            OnAttack?.Invoke();
             nextAttackTime = Time.time + attackCooldown;
         }
     }
@@ -38,7 +47,7 @@ public class Player : MonoBehaviour
             {
                 if (IsEnemyInFront(enemy.transform))
                 {
-                    enemy.GetComponent<Enemy>().TakeDamage(attackDamage);
+                    enemy.GetComponent<Enemy>().OnTakeDamage?.Invoke(attackDamage);
                 }
             }
         }
@@ -57,7 +66,7 @@ public class Player : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Die();
+            OnDie?.Invoke();
         }
     }
 

@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     public int currentHealth;
     public float attackRange = 1.5f;
     public int attackDamage = 10;
+    public string damageType = "Physical";
     public float attackCooldown = 1f;
     private float nextAttackTime = 0f;
 
@@ -15,7 +16,7 @@ public class Enemy : MonoBehaviour
     public float attackAngle = 45f;
 
     public Action OnAttackPlayer;
-    public Action<int> OnTakeDamage;
+    public Action<int, string> OnTakeDamage;
     public Action OnDie;
 
     private void Start()
@@ -29,7 +30,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Player object not found! Ensure there is an object with the 'Player' tag in the scene.");
+            Debug.LogError("Player object not found!");
         }
 
         OnAttackPlayer += AttackPlayer;
@@ -73,11 +74,11 @@ public class Enemy : MonoBehaviour
         if (player != null)
         {
             Player playerScript = player.GetComponent<Player>();
-            playerScript.OnTakeDamage?.Invoke(attackDamage);
+            playerScript.OnTakeDamage?.Invoke(attackDamage, damageType);
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, string damageType)
     {
         currentHealth -= damage;
 
@@ -101,4 +102,5 @@ public class Enemy : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, chaseRange);
     }
+
 }

@@ -17,5 +17,6 @@ public class UIPanelManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Escape)){
             HidePanel(panel);
         }
+        
     }
 }

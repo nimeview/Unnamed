@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-    public float dashSpeed = 10f;
+    public float moveSpeed = 2f;
+    public float dashSpeed = 13f;
     public float dashDuration = 0.2f;
-    public float boostSpeed = 15f;
+    public float boostSpeed = 6f;
     public float boostDuration = 3f;
     public float boostCooldown = 3f;
     public float boostRechargeRate = 0.5f;
